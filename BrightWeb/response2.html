@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UX Feedback Survey</title>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+  <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue.css" />
+  <style>
+    :root { --gap: 16px; }
+    .scale { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; align-items: center; }
+    .scale-legend { display:flex; justify-content: space-between; font-size: .9rem; color:#555; margin-top:4px; }
+    .required::after { content: " *"; color: #d32f2f; }
+    .sticky-actions { position: sticky; bottom: 0; z-index: 10; }
+    .hint { font-size:.85rem; color:#666; }
+    .w3-radio+label, .w3-check+label { margin-right: 16px; }
+    .section-card { padding: 20px; }
+    .pill { border-radius: 999px; }
+    .divider { height:1px; background: rgba(0,0,0,.08); margin: 12px 0 20px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
+  </style>
+</head>
+<body class="w3-theme-l5">
+
+  <!-- Top Bar -->
+  <header class="w3-theme w3-padding-16 w3-card">
+    <div class="w3-content" style="max-width:1100px">
+      <h1 class="w3-xxlarge w3-margin-0">Iullia Pashkovskaia BrightWeb</h1>
+      <p class="w3-opacity w3-margin-0">Help us improve by sharing your experience.</p>
+    </div>
+  </header>
+
+  <!-- HOME button (opens in new tab) -->
+  <section class="w3-content" style="max-width:1100px">
+    <div class="w3-padding-16">
+      <a href="index.html"
+         target="_blank"
+         rel="noopener noreferrer"
+         class="w3-button w3-white w3-border w3-round-large"
+         aria-label="Go to Home">HOME</a>
+    </div>
+  </section>
+
+  <!-- Progress / Intro -->
+  <section class="w3-content" style="max-width:1100px">
+    <div class="w3-panel w3-white w3-card section-card w3-round-large w3-margin-top">
+      <div class="w3-row-padding">
+        <div class="w3-col l8 m7 s12">
+          <p class="hint">Fields marked with <span style="color:#d32f2f">*</span> are required. Your answers autosave in your browser until you submit.</p>
+        </div>
+        <div class="w3-col l4 m5 s12">
+          <div class="w3-light-grey w3-round-large" aria-hidden="true">
+            <div id="progressBar" class="w3-theme w3-round-large" style="height:10px;width:0%"></div>
+          </div>
+          <p class="w3-small w3-right" id="progressText" aria-live="polite">0% complete</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- We’ll handle submission in JS to build a mailto: -->
+  <form id="surveyForm">
+    <!-- Overall Impression -->
+    <div class="w3-card w3-white section-card w3-round-large w3-margin-top">
+      <h2 class="w3-xlarge">Overall Impression</h2>
+      <div class="divider"></div>
+
+      <label for="firstImpression" class="w3-block required">What’s your first impression of the website/app?</label>
+      <textarea id="firstImpression" name="firstImpression" class="w3-input w3-border w3-round" rows="3" required></textarea>
+
+      <label for="purpose" class="w3-block w3-margin-top required">How would you describe the purpose of this site/app in your own words?</label>
+      <textarea id="purpose" name="purpose" class="w3-input w3-border w3-round" rows="3" required></textarea>
+
+      <label for="threeWords" class="w3-block w3-margin-top required">What three words would you use to describe your experience?</label>
+      <input id="threeWords" name="threeWords" class="w3-input w3-border w3-round" placeholder="e.g., fast, friendly, clean" required />
+
+      <label for="confuse" class="w3-block w3-margin-top">Did anything confuse or frustrate you right away?</label>
+      <textarea id="confuse" name="confuse" class="w3-input w3-border w3-round" rows="3" placeholder="Optional"></textarea>
+    </div>
+
+    <!-- Navigation & Usability -->
+    <div class="w3-card w3-white section-card w3-round-large w3-margin-top">
+      <h2 class="w3-xlarge">Navigation &amp; Usability</h2>
+      <div class="divider"></div>
+
+      <fieldset class="w3-margin-bottom">
+        <legend class="required">How easy was it to find what you were looking for?</legend>
+        <div class="scale" role="radiogroup" aria-label="Ease of finding content">
+          <label class="w3-center"><input class="w3-radio" type="radio" name="findEase" value="1" required> 1</label>
+          <label class="w3-center"><input class="w3-radio" type="radio" name="findEase" value="2"> 2</label>
+          <label class="w3-center"><input class="w3-radio" type="radio" name="findEase" value="3"> 3</label>
+          <label class="w3-center"><input class="w3-radio" type="radio" name="findEase" value="4"> 4</label>
+          <label class="w3-center"><input class="w3-radio" type="radio" name="findEase" value="5"> 5</label>
+        </div>
+        <div class="scale-legend"><span>Very easy</span><span>Very difficult</span></div>
+      </fieldset>
+
+      <label for="lostPoints" class="w3-block w3-margin-top">Were there any points where you felt lost or unsure of what to do next?</label>
+      <textarea id="lostPoints" name="lostPoints" class="w3-input w3-border w3-round" rows="3"></textarea>
+
+      <fieldset class="w3-margin-top">
+        <legend class="required">How intuitive do you find the navigation/menu layout?</legend>
+        <div class="scale" role="radiogroup" aria-label="Navigation intuitiveness">
+          <label class="w3-center"><input class="w3-radio" type="radio" name="navIntuitive" value="1" required> 1</label>
+          <label class="w3-center"><input class="w3-radio" type="radio" name="navIntuitive" value="2"> 2</label>
+          <label class="w3-center"><input class="w3-radio" type="radio" name="navIntuitive" value="3"> 3</label>
+          <label class="w3-center"><input class="w3-radio" type="radio" name="navIntuitive" value="4"> 4</label>
+          <label class="w3-center"><input class="w3-radio" type="radio" name="navIntuitive" value="5"> 5</label>
+        </div>
+        <div class="scale-legend"><span>Very intuitive</span><span>Not intuitive at all</span></div>
+      </fieldset>
+
+      <fieldset class="w3-margin-top">
+        <legend class="required">How would you rate the ease of completing tasks?</legend>
+        <div class="w3-row-padding">
+          <div class="w3-col m4 s12 w3-margin-bottom">
+            <label class="w3-small">Signing up</label>
+            <div class="scale" role="radiogroup" aria-label="Ease of signing up">
+              <label class="w3-center"><input class="w3-radio" type="radio" name="signupEase" value="1" required> 1</label>
+              <label class="w3-center"><input class="w3-radio" type="radio" name="signupEase" value="2"> 2</label>
+              <label class="w3-center"><input class="w3-radio" type="radio" name="signupEase" value="3"> 3</label>
+              <label class="w3-center"><input class="w3-radio" type="radio" name="signupEase" value="4"> 4</label>
+              <label class="w3-center"><input class="w3-radio" type="radio" name="signupEase" value="5"> 5</label>
+            </div>
+            <div class="scale-legend"><span>Very easy</span><span>Very difficult</span></div>
+          </div>
+          <div class="w3-col m4 s12 w3-margin-bottom">
+            <label class="w3-small">Making a purchase</label>
+            <div class="scale" role="radiogroup" aria-label="Ease of making a purchase">
+              <label class="w3-center"><input class="w3-radio" type="radio" name="purchaseEase" value="1" required> 1</label>
+              <label class="w3-center"><input class="w3-radio" type="radio" name="purchaseEase" value="2"> 2</label>
+              <label class="w3-center"><input class="w3-radio" type="radio" name="purchaseEase" value="3"> 3</label>
+              <label class="w3-center"><input class="w3-radio" type="radio" name="purchaseEase" value="4"> 4</label>
+              <label class="w3-center"><input class="w3-radio" type="radio" name="purchaseEase" value="5"> 5</label>
+            </div>
+            <div class="scale-legend"><span>Very easy</span><span>Very difficult</span></div>
+          </div>
+          <div class="w3-col m4 s12 w3-margin-bottom">
+            <label class="w3-small">Finding information</label>
+            <div class="scale" role="radiogroup" aria-label="Ease of finding information">
+              <label class="w3-center"><input class="w3-radio" type="radio" name="infoEase" value="1" required> 1</label>
+              <label class="w3-center"><input class="w3-radio" type="radio" name="infoEase" value="2"> 2</label>
+              <label class="w3-center"><input class="w3-radio" type="radio" name="infoEase" value="3"> 3</label>
+              <label class="w3-center"><input class="w3-radio" type="radio" name="infoEase" value="4"> 4</label>
+              <label class="w3-center"><input class="w3-radio" type="radio" name="infoEase" value="5"> 5</label>
+            </div>
+            <div class="scale-legend"><span>Very easy</span><span>Very difficult</span></div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="w3-margin-top">
+        <legend>Did you encounter any broken links, slow pages, or bugs?</legend>
+        <p>
+          <input class="w3-radio" type="radio" name="issues" id="issuesYes" value="yes"> <label for="issuesYes">Yes</label>
+          <input class="w3-radio" type="radio" name="issues" id="issuesNo" value="no" checked> <label for="issuesNo">No</label>
+        </p>
+        <textarea id="issuesDetail" name="issuesDetail" class="w3-input w3-border w3-round w3-hide" rows="3" placeholder="Please describe the issue(s)"></textarea>
+      </fieldset>
+    </div>
+
+    <!-- Design & Aesthetics -->
+    <div class="w3-card w3-white section-card w3-round-large w3-margin-top">
+      <h2 class="w3-xlarge">Design &amp; Aesthetics</h2>
+      <div class="divider"></div>
+
+      <fieldset>
+        <legend class="required">What do you think of the overall look and feel?</legend>
+        <div class="scale" role="radiogroup" aria-label="Look and feel">
+          <label class="w3-center"><input class="w3-radio" type="radio" name="lookFeel" value="1" required> 1</label>
+          <label class="w3-center"><input class="w3-radio" type="radio" name="lookFeel" value="2"> 2</label>
+          <label class="w3-center"><input class="w3-radio" type="radio" name="lookFeel" value="3"> 3</label>
+          <label class="w3-center"><input class="w3-radio" type="radio" name="lookFeel" value="4"> 4</label>
+          <label class="w3-center"><input class="w3-radio" type="radio" name="lookFeel" value="5"> 5</label>
+        </div>
+        <div class="scale-legend"><span>Poor</span><span>Excellent</span></div>
+      </fieldset>
+
+      <p class="w3-margin-top">
+        <span>Does the design feel consistent and professional?</span><br/>
+        <input class="w3-radio" type="radio" name="designConsistent" id="designYes" value="yes"> <label for="designYes">Yes</label>
+        <input class="w3-radio" type="radio" name="designConsistent" id="designNo" value="no"> <label for="designNo">No</label>
+        <input class="w3-radio" type="radio" name="designConsistent" id="designUnsure" value="unsure" checked> <label for="designUnsure">Not sure</label>
+      </p>
+
+      <p>
+        <span>Is the text easy to read and the layout clear?</span><br/>
+        <input class="w3-radio" type="radio" name="readable" id="readYes" value="yes" checked> <label for="readYes">Yes</label>
+        <input class="w3-radio" type="radio" name="readable" id="readNo" value="no"> <label for="readNo">No</label>
+      </p>
+
+      <p>
+        <span>Do the images, icons, or colours help or distract?</span><br/>
+        <span class="hint">Tick any that helped; add notes below if relevant.</span><br/>
+        <input class="w3-check" type="checkbox" id="imgsHelp" name="visualHelp" value="images"> <label for="imgsHelp">Images</label>
+        <input class="w3-check" type="checkbox" id="iconsHelp" name="visualHelp" value="icons"> <label for="iconsHelp">Icons</label>
+        <input class="w3-check" type="checkbox" id="colorsHelp" name="visualHelp" value="colours"> <label for="colorsHelp">Colours</label>
+      </p>
+      <textarea id="visualNotes" name="visualNotes" class="w3-input w3-border w3-round" rows="3" placeholder="If any distracted you, tell us why"></textarea>
+    </div>
+
+    <!-- Performance & Functionality -->
+    <div class="w3-card w3-white section-card w3-round-large w3-margin-top">
+      <h2 class="w3-xlarge">Performance &amp; Functionality</h2>
+      <div class="divider"></div>
+
+      <p>
+        <span>Did the site/app load quickly enough for you?</span><br/>
+        <input class="w3-radio" type="radio" name="fastLoad" id="fastYes" value="yes" checked> <label for="fastYes">Yes</label>
+        <input class="w3-radio" type="radio" name="fastLoad" id="fastNo" value="no"> <label for="fastNo">No</label>
+      </p>
+
+      <p>
+        <span>Did any features not work as expected?</span><br/>
+        <input class="w3-radio" type="radio" name="featuresIssue" id="featYes" value="yes"> <label for="featYes">Yes</label>
+        <input class="w3-radio" type="radio" name="featuresIssue" id="featNo" value="no" checked> <label for="featNo">No</label>
+      </p>
+      <textarea id="featuresDetail" name="featuresDetail" class="w3-input w3-border w3-round w3-hide" rows="3" placeholder="Which features and what happened?"></textarea>
+
+      <p class="w3-margin-top">
+        <span>Were you able to use it smoothly on your device (mobile/desktop)?</span><br/>
+        <input class="w3-radio" type="radio" name="smoothDevice" id="smoothYes" value="yes" checked> <label for="smoothYes">Yes</label>
+        <input class="w3-radio" type="radio" name="smoothDevice" id="smoothNo" value="no"> <label for="smoothNo">No</label>
+      </p>
+      <textarea id="deviceIssues" name="deviceIssues" class="w3-input w3-border w3-round w3-hide" rows="3" placeholder="What didn’t work on your device?"></textarea>
+
+      <fieldset class="w3-margin-top">
+        <legend>How stable did the app feel?</legend>
+        <div class="scale" role="radiogroup" aria-label="App stability">
+          <label class="w3-center"><input class="w3-radio" type="radio" name="stability" value="1"> 1</label>
+          <label class="w3-center"><input class="w3-radio" type="radio" name="stability" value="2"> 2</label>
+          <label class="w3-center"><input class="w3-radio" type="radio" name="stability" value="3"> 3</label>
+          <label class="w3-center"><input class="w3-radio" type="radio" name="stability" value="4"> 4</label>
+          <label class="w3-center"><input class="w3-radio" type="radio" name="stability" value="5"> 5</label>
+        </div>
+        <div class="scale-legend"><span>Unstable</span><span>Very stable</span></div>
+      </fieldset>
+    </div>
+
+    <!-- Content & Value -->
+    <div class="w3-card w3-white section-card w3-round-large w3-margin-top">
+      <h2 class="w3-xlarge">Content &amp; Value</h2>
+      <div class="divider"></div>
+
+      <p>
+        <span>Was the information provided clear and helpful?</span><br/>
+        <input class="w3-radio" type="radio" name="infoHelpful" id="infoYes" value="yes" checked> <label for="infoYes">Yes</label>
+        <input class="w3-radio" type="radio" name="infoHelpful" id="infoNo" value="no"> <label for="infoNo">No</label>
+      </p>
+
+      <p>
+        <span>Did you find what you were hoping to find?</span><br/>
+        <input class="w3-radio" type="radio" name="foundHoped" id="foundYes" value="yes"> <label for="foundYes">Yes</label>
+        <input class="w3-radio" type="radio" name="foundHoped" id="foundNo" value="no" checked> <label for="foundNo">No</label>
+      </p>
+
+      <label for="missing" class="w3-block">Is there anything missing that would make the site/app more useful?</label>
+      <textarea id="missing" name="missing" class="w3-input w3-border w3-round" rows="3"></textarea>
+
+      <p class="w3-margin-top">
+        <span>Would you trust this website/app with your personal information or payment details?</span><br/>
+        <input class="w3-radio" type="radio" name="trust" id="trustYes" value="yes"> <label for="trustYes">Yes</label>
+        <input class="w3-radio" type="radio" name="trust" id="trustNo" value="no"> <label for="trustNo">No</label>
+      </p>
+    </div>
+
+    <!-- Engagement & Conversion -->
+    <div class="w3-card w3-white section-card w3-round-large w3-margin-top">
+      <h2 class="w3-xlarge">Engagement &amp; Conversion</h2>
+      <div class="divider"></div>
+
+      <label for="motivation" class="w3-block">What motivated you to try this site/app?</label>
+      <textarea id="motivation" name="motivation" class="w3-input w3-border w3-round" rows="3"></textarea>
+
+      <label for="comeBack" class="w3-block w3-margin-top">What would make you come back or recommend it to others?</label>
+      <textarea id="comeBack" name="comeBack" class="w3-input w3-border w3-round" rows="3"></textarea>
+
+      <label for="stopUsing" class="w3-block w3-margin-top">What would make you stop using it?</label>
+      <textarea id="stopUsing" name="stopUsing" class="w3-input w3-border w3-round" rows="3"></textarea>
+
+      <label for="encouraged" class="w3-block w3-margin-top">Did you feel encouraged to take action (e.g., sign up, buy, contact)?</label>
+      <textarea id="encouraged" name="encouraged" class="w3-input w3-border w3-round" rows="3"></textarea>
+    </div>
+
+    <!-- Final & Open Feedback -->
+    <div class="w3-card w3-white section-card w3-round-large w3-margin-top">
+      <h2 class="w3-xlarge">Final &amp; Open Feedback</h2>
+      <div class="divider"></div>
+
+      <label for="changeOne" class="w3-block">If you could change one thing about the site/app, what would it be?</label>
+      <textarea id="changeOne" name="changeOne" class="w3-input w3-border w3-round" rows="3"></textarea>
+
+      <label for="satisfaction" class="w3-block w3-margin-top">On a scale of 1–10, how satisfied are you with your experience?</label>
+      <input type="range" id="satisfaction" name="satisfaction" min="1" max="10" value="7" class="w3-input" aria-valuemin="1" aria-valuemax="10" aria-valuenow="7">
+      <div class="w3-row">
+        <div class="w3-col s6 w3-left-align hint">1 = Not satisfied</div>
+        <div class="w3-col s6 w3-right-align hint">10 = Extremely satisfied</div>
+      </div>
+
+      <p class="w3-margin-top">
+        <span>Would you use this again or recommend it to a friend?</span><br/>
+        <input class="w3-radio" type="radio" name="recommend" id="recYes" value="yes"> <label for="recYes">Yes</label>
+        <input class="w3-radio" type="radio" name="recommend" id="recNo" value="no"> <label for="recNo">No</label>
+      </p>
+      <label for="recommendWhy" class="w3-block">Why or why not?</label>
+      <textarea id="recommendWhy" name="recommendWhy" class="w3-input w3-border w3-round" rows="3"></textarea>
+
+      <label for="additional" class="w3-block w3-margin-top">Any additional comments or suggestions?</label>
+      <textarea id="additional" name="additional" class="w3-input w3-border w3-round" rows="3"></textarea>
+    </div>
+
+    <!-- Actions -->
+    <div class="sticky-actions w3-margin-top">
+      <div class="w3-white w3-card w3-padding w3-round-large w3-bar w3-content" style="max-width:1100px">
+        <button type="button" class="w3-bar-item w3-button w3-theme-d1 w3-round-large pill" id="saveBtn">Save Draft</button>
+        <button type="reset" class="w3-bar-item w3-button w3-light-grey w3-round-large pill">Reset</button>
+        <span class="w3-bar-item w3-right w3-small hint">Your data stays in this browser unless you export or submit.</span>
+      </div>
+    </div>
+
+    <div class="w3-center w3-margin-top w3-margin-bottom">
+      <button type="submit" class="w3-button w3-theme w3-round-large w3-padding-large">Submit Feedback</button>
+      <button type="button" class="w3-button w3-border w3-round-large w3-padding-large" id="exportBtn">Export as JSON</button>
+    </div>
+  </form>
+
+  <footer class="w3-center w3-small w3-text-grey w3-padding-32">Thanks for helping us improve. ✨</footer>
+
+  <script>
+    // ====== Conditional reveal ======
+    const issuesYes = document.getElementById('issuesYes');
+    const issuesNo = document.getElementById('issuesNo');
+    const issuesDetail = document.getElementById('issuesDetail');
+    const featYes = document.getElementById('featYes');
+    const featNo = document.getElementById('featNo');
+    const featuresDetail = document.getElementById('featuresDetail');
+    const smoothYes = document.getElementById('smoothYes');
+    const smoothNo = document.getElementById('smoothNo');
+    const deviceIssues = document.getElementById('deviceIssues');
+    function toggle(el, show) { el.classList.toggle('w3-hide', !show); }
+    issuesYes.addEventListener('change', () => toggle(issuesDetail, true));
+    issuesNo.addEventListener('change', () => toggle(issuesDetail, false));
+    featYes.addEventListener('change', () => toggle(featuresDetail, true));
+    featNo.addEventListener('change', () => toggle(featuresDetail, false));
+    smoothYes.addEventListener('change', () => toggle(deviceIssues, false));
+    smoothNo.addEventListener('change', () => toggle(deviceIssues, true));
+
+    // ====== Progress tracking ======
+    const form = document.getElementById('surveyForm');
+    const requiredFields = Array.from(form.querySelectorAll('[required]'));
+    function distinctRequiredCount() {
+      return new Set(requiredFields.map(f => f.name)).size;
+    }
+    function updateProgress() {
+      const filled = requiredFields.filter(f => {
+        if (f.type === 'radio') {
+          return !!form.querySelector('input[name="'+f.name+'"]:checked');
+        }
+        return f.value.trim();
+      }).length;
+      const pct = Math.round((filled / distinctRequiredCount()) * 100);
+      document.getElementById('progressBar').style.width = pct + '%';
+      document.getElementById('progressText').textContent = pct + '% complete';
+    }
+    form.addEventListener('input', updateProgress);
+    updateProgress();
+
+    // ====== Toast ======
+    function showToast(msg) {
+      const toast = document.createElement('div');
+      toast.className = 'w3-theme w3-round-large w3-card w3-animate-opacity';
+      toast.style.cssText = 'position:fixed;left:50%;transform:translateX(-50%);bottom:24px;padding:12px 16px;z-index:1000;';
+      toast.textContent = msg;
+      document.body.appendChild(toast);
+      setTimeout(()=>toast.remove(), 2000);
+    }
+
+    // ====== Helpers: collect data (handles checkboxes with same name) ======
+    function collectFormData(frm) {
+      const fd = new FormData(frm);
+      const data = {};
+      for (const [k, v] of fd.entries()) {
+        if (data[k] === undefined) data[k] = v;
+        else if (Array.isArray(data[k])) data[k].push(v);
+        else data[k] = [data[k], v];
+      }
+      for (const k in data) {
+        if (Array.isArray(data[k]) && data[k].length === 1) data[k] = data[k][0];
+      }
+      return data;
+    }
+
+    // ====== Save/Load draft (localStorage) ======
+    const STORAGE_KEY = 'ux_survey_draft_v1';
+    function saveDraft() {
+      const data = collectFormData(form);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      showToast('Draft saved locally.');
+    }
+    function loadDraft() {
+      const json = localStorage.getItem(STORAGE_KEY);
+      if (!json) return;
+      const data = JSON.parse(json);
+      for (const [k, v] of Object.entries(data)) {
+        const el = form.elements[k];
+        if (!el) continue;
+        if (el.type === 'radio') {
+          const opt = form.querySelector(`input[name="${k}"][value="${v}"]`);
+          if (opt) opt.checked = true;
+        } else if (el.type === 'checkbox') {
+          const values = Array.isArray(v) ? v : [v];
+          values.forEach(val => {
+            const cb = form.querySelector(`input[name="${k}"][value="${val}"]`);
+            if (cb) cb.checked = true;
+          });
+        } else if (el.length && el[0] && el[0].type === 'radio') {
+          const opt = form.querySelector(`input[name="${k}"][value="${v}"]`);
+          if (opt) opt.checked = true;
+        } else {
+          el.value = v;
+        }
+      }
+      issuesYes.dispatchEvent(new Event('change'));
+      featYes.dispatchEvent(new Event('change'));
+      smoothNo.dispatchEvent(new Event('change'));
+      updateProgress();
+    }
+
+    // ====== Export as JSON ======
+    function exportJSON() {
+      const data = collectFormData(form);
+      const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'ux-feedback.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // ====== Mailto submission ======
+    function makeMailBody(obj) {
+      const lines = [];
+      const toLine = (k, v) => `${k}: ${v}`;
+      for (const key of Object.keys(obj)) {
+        const val = obj[key];
+        if (Array.isArray(val)) lines.push(toLine(key, val.join(', ')));
+        else lines.push(toLine(key, (val ?? '').toString()));
+      }
+      return lines.join('\r\n');
+    }
+
+    const TO = 'iuliia_pashkovskaia@icloud.com';
+    const SUBJECT = 'Feedback Survey';
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = collectFormData(form);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      const body = makeMailBody(data);
+      const href = `mailto:${encodeURIComponent(TO)}?subject=${encodeURIComponent(SUBJECT)}&body=${encodeURIComponent(body)}`;
+      if (href.length > 1800) {
+        showToast('Your message is quite long. If the email doesn’t populate fully, use “Export as JSON” and send it manually.');
+      }
+      window.location.href = href;
+      showToast('Opening your email app…');
+    });
+
+    // Buttons
+    document.getElementById('saveBtn').addEventListener('click', saveDraft);
+    document.getElementById('exportBtn').addEventListener('click', exportJSON);
+
+    // On load
+    document.addEventListener('DOMContentLoaded', loadDraft);
+  </script>
+</body>
+</html>
